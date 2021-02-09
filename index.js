@@ -1,5 +1,8 @@
 //Estamos requiriendo un modulo
 const express = require('express');
+//Aqui estoy requiriendo Morgan
+const morgan = require('morgan');
+
 //Aqui estoy ejecutando el servidor y creo un objecto para que me devuelva
 const app = express();
 
@@ -7,12 +10,22 @@ const app = express();
 //npx nodemon index.js, ahora modifique el package con npm start lo inicio
 
 
-
+function logger(req,res,next){
+    console.log("Peticion Recibida");
+    //Aqui imprimo por cual protocolo en este caso es http, por cual ruta,ene ste caso es localhost
+    console.log(`Ruta recibida: ${req.protocol}://${req.get('host')}${req.originalUrl}`)
+    next()
+}
 
 
 
 //Esta linea es para decirle a exprexx que pueda leer archivos json
 app.use(express.json());
+//Aqui estoy llamando a la funcion que mediante app.use MIDDLEWARE
+app.use(logger);
+
+//Aqui llamo a la funcion Middleware que traje de morgan
+app.use(morgan('dev'))
 
 //Esta cunion es de exprese, y es que podemos ahcer algo antes de que llegue a la ruta en si
 //Para todas las rutas /user van a pasar por aqui primero
@@ -27,7 +40,7 @@ app.all('/user/:id',(req,res,next)=>{
 
 //Aqui hago una petecion Get
 //Petiicon Get sirve para devolver cosa
-app.get('/',(req,res)=>{
+app.get('/o',(req,res)=>{
     res.send('Hola Mundo por peticion GET');
 });
 
@@ -68,9 +81,10 @@ app.post("/user/:id",(req,res)=>{
     res.send("POST RECIBIDO");
 })
 
+app.use(express.static('public'));
 
 app.listen(5000,()=> {
-    console.log("Server en el puerto 3000");
+    console.log("Server en el puerto 5000");
 });
 
 
