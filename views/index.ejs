@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plantilla EJS</title>
+</head>
+<body>
+    <h1>Jola Mundo por EJS</h1>
+
+    <!-- Aqui creo una funcion con EJS que por un for me imprimi -->
+    <ul>
+        <% people.forEach(function (person){ %>
+            <li> <%= person.name %> </li>
+            <% }) %>
+    </ul>
+
+
+</body>
+</html>

@@ -2,23 +2,30 @@
 const express = require('express');
 //Aqui estoy requiriendo Morgan
 const morgan = require('morgan');
-
 //Aqui estoy ejecutando el servidor y creo un objecto para que me devuelva
 const app = express();
-
 //Comando para ejeutar con nodemon
 //npx nodemon index.js, ahora modifique el package con npm start lo inicio
 
 
+//      Settings o Configuracion
+//El el primer parametro colocamos el nombre de la variable, en el segundo el valor
+app.set('AppName','Carlos Diaz');
+//Aqui uso el nombre por defecto de port y especifico que puerto voy a utilizar
+app.set('port',3000);
+
+//Aqui especifico el motor de plantilla qu voy a utilizar
+app.set('view engine','ejs');
+
+
+
+//      Middlewares
 function logger(req,res,next){
     console.log("Peticion Recibida");
     //Aqui imprimo por cual protocolo en este caso es http, por cual ruta,ene ste caso es localhost
     console.log(`Ruta recibida: ${req.protocol}://${req.get('host')}${req.originalUrl}`)
     next()
 }
-
-
-
 //Esta linea es para decirle a exprexx que pueda leer archivos json
 app.use(express.json());
 //Aqui estoy llamando a la funcion que mediante app.use MIDDLEWARE
@@ -27,8 +34,17 @@ app.use(logger);
 //Aqui llamo a la funcion Middleware que traje de morgan
 app.use(morgan('dev'))
 
+
+
+
+//      Routers o Rutas
 //Esta cunion es de exprese, y es que podemos ahcer algo antes de que llegue a la ruta en si
 //Para todas las rutas /user van a pasar por aqui primero
+app.get("/",(req,res)=>{
+    const data= [{name:'carlos'},{name:'carlos2'},{name:'carlos3'},{name:"carlos4"}];
+    res.render('index.ejs', {people:data});
+})
+
 app.all('/user/:id',(req,res,next)=>{
     console.log('Alguien paso por aqui');
     //res.send('Listo')
@@ -81,10 +97,12 @@ app.post("/user/:id",(req,res)=>{
     res.send("POST RECIBIDO");
 })
 
+//Aqui estoy llamando la carperta public que es la parte del fronted para la pagina
 app.use(express.static('public'));
 
-app.listen(5000,()=> {
-    console.log("Server en el puerto 5000");
+app.listen(app.get('port'),()=> {
+    console.log(app.get('AppName'))
+    console.log("Server en el puerto: ",app.get('port'));
 });
 
 
