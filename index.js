@@ -1,3 +1,6 @@
+//Todos los ejercicos de aqui son del video de expres de Fazt
+//https://www.youtube.com/watch?v=794Q71KVw1k
+
 //Estamos requiriendo un modulo
 const express = require('express');
 //Aqui estoy requiriendo Morgan
@@ -32,6 +35,8 @@ app.use(express.json());
 app.use(logger);
 
 //Aqui llamo a la funcion Middleware que traje de morgan
+//Esta funcion me imprimealgo asi 
+//PUT /user/74443 200 9.829 ms - 33
 app.use(morgan('dev'))
 
 
@@ -42,6 +47,7 @@ app.use(morgan('dev'))
 //Para todas las rutas /user van a pasar por aqui primero
 app.get("/",(req,res)=>{
     const data= [{name:'carlos'},{name:'carlos2'},{name:'carlos3'},{name:"carlos4"}];
+    //Aqui declaro una variable con los mismos datos de data
     res.render('index.ejs', {people:data});
 })
 
@@ -100,10 +106,13 @@ app.post("/user/:id",(req,res)=>{
 //Aqui estoy llamando la carperta public que es la parte del fronted para la pagina
 app.use(express.static('public'));
 
+//Aqui espoecifico el puerto que voy a utliar para escuchar
 app.listen(app.get('port'),()=> {
     console.log(app.get('AppName'))
     console.log("Server en el puerto: ",app.get('port'));
 });
 
-
-//Minuto 53
+app.put("/user/:userrid",(req,res)=>{
+    console.log(req.params)
+    res.send(`El user ${req.params.userrid} ha sido actualizado`)
+})
